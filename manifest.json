@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+
+  "name": "Facebook Birthday",
+  "description": "This extension collects happy birthday messages from a users wall.",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "Nuvola_cake_4.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "https://ajax.googleapis.com/"
+  ]
+}
