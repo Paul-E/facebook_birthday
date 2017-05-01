@@ -31,13 +31,14 @@ function handleMainPosts(request) {
       chrome.tabs.executeScript(tab.id, {file: "util.js"});
       chrome.tabs.executeScript(tab.id, {file: "aggregate_collect.js"});
       ids.push(tab.id);
-      // chrome.tabs.sendMessage(tab.id, {start: start, stop: stop, id: i});
     });
   }
+  setTimeout(function() {
   for (let i = 0; i < ids.length; i++) {
     let id = ids[i];
     chrome.tabs.sendMessage(id, {start: start, stop: stop, id: i});
   }
+  }, 2000);
 }
 
 function initAggregateReturned(size) {
