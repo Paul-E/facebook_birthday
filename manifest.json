@@ -10,6 +10,11 @@
   },
   "permissions": [
     "activeTab",
-    "https://ajax.googleapis.com/"
+    "https://ajax.googleapis.com/",
+    "tabs", "http://www.facebook.com/"
   ]
+  "background": {
+    "scripts": ["eventPage.js"],
+    "persistent": false
+  },
 }
