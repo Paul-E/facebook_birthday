@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
 
-  "name": "Facebook Birthday",
+  "name": "Social Birthday",
   "description": "This extension collects happy birthday messages from a users wall.",
   "version": "1.0",
   "browser_action": {
