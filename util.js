@@ -27,6 +27,22 @@ function deserializePosts(posts) {
   return ret;
 }
 
+function parsePost(post) {
+  var nameElement = post.getElementsByTagName("a")[2];
+  var name = nameElement.innerText;
+  var profileLink = nameElement.href;
+  
+  var timeElement = post.getElementsByTagName("abbr")[0];
+  var unixTime = timeElement.dataset.utime;
+  var date = new Date(unixTime * 1000);
+
+  var messageElement = post.getElementsByClassName("userContent")[0];
+  var messageHtml = messageElement.innerHTML;
+
+  return {senderName: name, senderProfile: profileLink,
+          time: date, message: messageHtml};
+}
+
 function scrapePosts(startDate, stopDate) {
   let posts = document.getElementsByClassName("fbUserContent");
   let ret = [];

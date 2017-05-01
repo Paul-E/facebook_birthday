@@ -4,9 +4,11 @@ function getWallPosts() {
   // if (start > stop) {
   //   return;
   // }
+  chrome.tabs.executeScript(null, {file: "util.js"});
   chrome.tabs.executeScript(null, {file: "collect.js"});
 
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    console.log(tabs);
     chrome.tabs.sendMessage(tabs[0].id, {start: start.toJSON(),
                                          stop: stop.toJSON()});
   });
