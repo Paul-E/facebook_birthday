@@ -23,7 +23,7 @@ function findAggregated() {
   let ret = new Set();
   for (let i = 0; i < potential.length; i ++) {
     let current = potential[i];
-    if (current.innerText.search("friends posted on your Timeline") >= 0) {
+    if (current.innerText.search("friends posted on [a-zA-Z']+ Timeline") >= 0) {
       let link = current.getElementsByTagName("a")[0];
       ret.add(link.href);
     }
