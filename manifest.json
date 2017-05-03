@@ -3,7 +3,7 @@
 
   "name": "Social Birthday",
   "description": "This extension collects happy birthday messages from a users wall.",
-  "version": "1.0",
+  "version": "1.1",
   "browser_action": {
     "default_icon": "Nuvola_cake_4.png",
     "default_popup": "popup.html"
