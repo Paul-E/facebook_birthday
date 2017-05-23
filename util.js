@@ -27,6 +27,7 @@ function deserializePosts(posts) {
   return ret;
 }
 
+
 function parsePost(post) {
   var nameElement = post.getElementsByTagName("a")[2];
   var name = nameElement.innerText;
@@ -43,8 +44,20 @@ function parsePost(post) {
           time: date, message: messageHtml};
 }
 
+function filterPosts(posts) {
+  var ret = [];
+  for (let i = 0; i < posts.length; i++) {
+    let post = posts[i];
+    if (typeof post.getElementsByClassName("userContent")[0] !== "undefined" &&
+	typeof post.getElementsByTagName("abbr")[0] !== "undefined") {
+      ret.push(post);
+    }
+  }
+  return ret;
+}
+
 function scrapePosts(startDate, stopDate) {
-  let posts = document.getElementsByClassName("fbUserContent");
+  let posts = filterPosts(document.getElementsByClassName("fbUserContent"));
   let ret = [];
   for (let i = 0; i < posts.length; i++) {
     let postElement = posts[i];
