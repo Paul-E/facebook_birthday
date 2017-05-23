@@ -22,6 +22,10 @@ function handleMainPosts(request) {
   let tmpPosts = deserializePosts(request.posts);
   addUniquePosts(tmpPosts);
   let aggregateUrls = request.aggregate;
+  if (aggregateUrls.length === 0) {
+    download();
+    return;
+  }
   initAggregateReturned(aggregateUrls.length);
   let ids = [];
   for (let i = 0; i < aggregateUrls.length; i++) {
