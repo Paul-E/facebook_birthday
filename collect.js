@@ -4,31 +4,36 @@ chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     let start = new Date(request["start"]);
     let stop = new Date(request["stop"]);
+    let profile_name = location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     console.log(start);
-    loadPosts(start).then(function() {
-      console.log("Done scrolling");
-      let posts = scrapePosts(start, stop);
-      let aggregateUrls = findAggregated();
-      let toSend = {posts: serializePosts(posts),
-                    aggregate: Array.from(aggregateUrls),
-                    start: request["start"],
-                    stop: request["stop"]};
-      console.log("Sending posts to event page");
-      chrome.runtime.sendMessage(toSend);
+    loadPosts(start)
+      .then(loadAggregate)
+      .then(function() {
+        console.log("Done scrolling");
+        let posts = scrapePosts(start, stop);
+        let toSend = {posts: serializePosts(posts),
+                      start: request["start"],
+                      stop: request["stop"],
+                      profile_name: profile_name};
+        console.log("Sending posts to event page");
+        chrome.runtime.sendMessage(toSend);
     });
   });
 
-function findAggregated() {
-  let potential = document.getElementsByClassName("fcg");
-  let ret = new Set();
-  for (let i = 0; i < potential.length; i ++) {
-    let current = potential[i];
-    if (current.innerText.search("friends posted on [a-zA-Z']+ Timeline") >= 0) {
-      let link = current.getElementsByTagName("a")[0];
-      ret.add(link.href);
+
+function loadAggregate() {
+  console.log("Loading aggregated posts.");
+  return new Promise(function(resolve, reject) {
+    let show_all = document.getElementsByClassName("showAll");
+    if (show_all.length === 0) {
+      resolve(true);
     }
-  }
-  return ret;
+    let show_all_links = show_all[0].getElementsByTagName("a");
+    show_all_links[0].click();
+    setTimeout(function() {
+      resolve(loadAggregate());
+    }, 2000);
+  });
 }
 
 function loadPosts(startDate) {
