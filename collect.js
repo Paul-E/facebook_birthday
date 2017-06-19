@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener(
     let profile_name = location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     console.log(start);
     loadPosts(start)
-      .then(loadAggregate)
+      .then(waitTime)
       .then(function() {
         console.log("Done scrolling");
         let posts = scrapePosts(start, stop);
@@ -20,34 +20,32 @@ chrome.runtime.onMessage.addListener(
     });
   });
 
-
-function loadAggregate() {
-  console.log("Loading aggregated posts.");
-  return new Promise(function(resolve, reject) {
-    let show_all = document.getElementsByClassName("showAll");
-    if (show_all.length === 0) {
-      resolve(true);
-    }
-    let show_all_links = show_all[0].getElementsByTagName("a");
-    show_all_links[0].click();
-    setTimeout(function() {
-      resolve(loadAggregate());
+function waitTime() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
     }, 2000);
   });
 }
 
-function loadPosts(startDate) {
-  console.log("Loading posts");
-  window.scrollTo(0,document.body.scrollHeight); 
-  return new Promise(function(resolve, reject) {
-    setTimeout(function() {
-      var posts = document.getElementsByClassName("fbUserContent");
-      var lastPost = parsePost(posts[posts.length - 1]);
-      if (lastPost.time < startDate) {
-        resolve(true);
-      } else {
-        resolve(loadPosts(startDate));
-      }
-    }, 2000);
-  });
+function earliestPostDate() {
+  var posts = document.getElementsByClassName("fbUserContent");
+  for (let i = posts.length - 1; i >=0; i--) {
+    try {
+      let lastPost = parsePost(posts[i]);
+      console.log(lastPost.time);
+      return lastPost.time;      
+    } catch (err) {
+      console.log("error parsing post: " + posts[i]);
+    }
+  }
+  return undefined;
+}
+
+async function loadPosts(startDate) {
+  while (startDate < earliestPostDate()) {
+    console.log("Loading posts");
+    window.scrollTo(0,document.body.scrollHeight);
+    await waitTime();
+  }
 }

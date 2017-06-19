@@ -38,7 +38,12 @@ function parsePost(post) {
   var date = new Date(unixTime * 1000);
 
   var messageElement = post.getElementsByClassName("userContent")[0];
-  var messageHtml = messageElement.innerHTML;
+  var messageHtml;
+  if (typeof messageElement !== "undefined") {
+    messageHtml = messageElement.innerHTML;
+  } else {
+    messageHtml = "";
+  }
 
   return {senderName: name, senderProfile: profileLink,
           time: date, message: messageHtml};
@@ -61,7 +66,13 @@ function scrapePosts(startDate, stopDate) {
   let ret = [];
   for (let i = 0; i < posts.length; i++) {
     let postElement = posts[i];
-    let post = parsePost(postElement);
+    let post;
+    try {
+      post = parsePost(postElement);
+    } catch (err) {
+      console.log(err);
+      continue;
+    }
     if (startDate <= post.time && post.time <= stopDate) {
       ret.push(post);
     }
