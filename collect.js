@@ -5,7 +5,8 @@ chrome.runtime.onMessage.addListener(
     let start = new Date(request["start"]);
     let stop = new Date(request["stop"]);
     let profile_name = location.pathname.replace(/^\/([^\/]*).*$/, '$1');
-    console.log(start);
+    console.log("start: " + start);
+    console.log("stop: " + stop);
     loadPosts(start)
       .then(loadAggregate)
       .then(waitTime)
@@ -16,7 +17,7 @@ chrome.runtime.onMessage.addListener(
                       start: request["start"],
                       stop: request["stop"],
                       profile_name: profile_name};
-        console.log("Sending posts to event page");
+        console.log("Sending " + posts.length + " posts to event page");
         chrome.runtime.sendMessage(toSend);
     });
   });
