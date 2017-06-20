@@ -7,6 +7,7 @@ chrome.runtime.onMessage.addListener(
     let profile_name = location.pathname.replace(/^\/([^\/]*).*$/, '$1');
     console.log(start);
     loadPosts(start)
+      .then(loadAggregate)
       .then(waitTime)
       .then(function() {
         console.log("Done scrolling");
@@ -19,6 +20,17 @@ chrome.runtime.onMessage.addListener(
         chrome.runtime.sendMessage(toSend);
     });
   });
+
+async function loadAggregate() {
+  let show_all = document.getElementsByClassName("showAll");
+  while (show_all.length !== 0) {
+    console.log("Loading aggregated posts.");
+    let show_all_links = show_all[0].getElementsByTagName("a");
+    show_all_links[0].click();
+    await waitTime();
+    show_all = document.getElementsByClassName("showAll");
+  }
+}
 
 function waitTime() {
   return new Promise(resolve => {
