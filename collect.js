@@ -46,6 +46,10 @@ function earliestPostDate() {
   for (let i = posts.length - 1; i >=0; i--) {
     try {
       let lastPost = parsePost(posts[i]);
+      if (lastPost.message.length === 0) {
+	// There is no message, so not wall post or not loaded.
+	continue;
+      }
       console.log(lastPost.time);
       return lastPost.time;      
     } catch (err) {
