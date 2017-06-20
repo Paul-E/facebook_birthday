@@ -18,12 +18,15 @@ chrome.runtime.onMessage.addListener(
   });
 
 function handleMainPosts(request) {
+  console.log("Deserializing " + request.posts.length + " posts");
   let tmpPosts = deserializePosts(request.posts);
   addUniquePosts(tmpPosts);
+  console.log("Found " + allPosts.length + " unqiue posts");
   download();
 }
 
 function download() {
+  console.log("Downloading " + allPosts.length + " posts");
   let postStr = JSON.stringify(serializePosts(allPosts));
   let downloadStr = "data:text/json;charset=utf8," + encodeURIComponent(postStr);
   let date_str = new Date().toISOString().slice(0,10);
