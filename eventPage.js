@@ -20,8 +20,9 @@ chrome.runtime.onMessage.addListener(
 function handleMainPosts(request) {
   console.log("Deserializing " + request.posts.length + " posts");
   let tmpPosts = deserializePosts(request.posts);
-  addUniquePosts(tmpPosts);
-  console.log("Found " + allPosts.length + " unqiue posts");
+  // addUniquePosts(tmpPosts);
+  // console.log("Found " + allPosts.length + " unqiue posts");
+  allPosts = tmpPosts;
   download();
 }
 
