@@ -56,7 +56,7 @@ function earliestPostDate() {
       console.log("error parsing post: " + posts[i]);
     }
   }
-  return undefined;
+  return new Date();
 }
 
 async function loadPosts(startDate) {
@@ -65,4 +65,5 @@ async function loadPosts(startDate) {
     window.scrollTo(0,document.body.scrollHeight);
     await waitTime();
   }
+  console.log("Finished loading posts.")
 }
